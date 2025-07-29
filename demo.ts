@@ -1,4 +1,4 @@
-let demo: string = "asddasd";
+let demo: string = "asddasdassssss";
 export function demoFunction() {
     console.log(demo);
 }
