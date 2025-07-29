@@ -11,6 +11,7 @@ using System.Linq;
 /// </summary>
 namespace FanXing.Editor
 {
+    
     public class ConfigEditorWindow : FXEditorBase
     {
         #region 菜单项
@@ -157,7 +158,7 @@ namespace FanXing.Editor
 
             EditorGUILayout.Space(10);
             DrawButtonGroup(
-                ("保存配置", ()=>
+                ("保存配置", () =>
                 {
                     if (ValidateNPCData(_selectedNPC))
                     {
@@ -200,7 +201,7 @@ namespace FanXing.Editor
                     int removeId = _npcConfigs[_selectedNPCIndex].npcId;
                     _npcConfigs.RemoveAt(_selectedNPCIndex);
                     foreach (var npc in _npcConfigs)
-                    { 
+                    {
                         if (npc.npcId > removeId)
                         {
                             npc.npcId--; // 调整后续NPC的ID
@@ -271,7 +272,7 @@ namespace FanXing.Editor
 
             EditorGUILayout.Space(10);
             DrawButtonGroup(
-             ("保存配置", ()=>
+             ("保存配置", () =>
              {
                  if (ValidateQuestData(_selectedQuest))
                  {
@@ -329,7 +330,7 @@ namespace FanXing.Editor
         {
             // EditorGUILayout.LabelField("商店配置功能开发中...", EditorStyles.centeredGreyMiniLabel);
             // TODO: 实现商店配置界面
-            EditorGUILayout.BeginHorizontal();         
+            EditorGUILayout.BeginHorizontal();
 
             // 左侧列表
             EditorGUILayout.BeginVertical(GUILayout.Width(250));
@@ -378,13 +379,13 @@ namespace FanXing.Editor
 
             EditorGUILayout.Space(10);
             DrawButtonGroup(
-                ("导出配置", ()=>
+                ("导出配置", () =>
                 {
                     if (ValidateShopData(_selectedShop))
-                    { 
+                    {
                         SaveShopConfigs();
                     }
-                 }
+                }
             ),
                 ("导出JSON", () => ExportJsonConfig(_shopConfigs, "shop_config"))
                 );
@@ -482,14 +483,15 @@ namespace FanXing.Editor
 
             EditorGUILayout.Space(10);
             DrawButtonGroup(
-                ("保存配置", ()=>
+                ("保存配置", () =>
                 {
                     if (ValidateCropData(_selectedCrop))
                     {
                         SaveCropConfigs();
                     }
-                }),
-                ("导出JSON", () => ExportJsonConfig(_cropConfigs,"crop_config"))
+                }
+            ),
+                ("导出JSON", () => ExportJsonConfig(_cropConfigs, "crop_config"))
                 );
         }
         private int GetNextCropId()
@@ -543,8 +545,8 @@ namespace FanXing.Editor
             EditorGUILayout.BeginVertical(GUILayout.Width(250));
             DrawHeader("技能列表");
             DrawButtonGroup(
-                ("新建技能",CreateNewSkill),
-                ("删除技能",DeleteSelectedSkill)
+                ("新建技能", CreateNewSkill),
+                ("删除技能", DeleteSelectedSkill)
                 );
             EditorGUILayout.Space(5);
             _scrollPosition = EditorGUILayout.BeginScrollView(_scrollPosition, GUILayout.Height(400));
@@ -588,7 +590,7 @@ namespace FanXing.Editor
             _selectedSkill.cooldown = EditorGUILayout.FloatField("冷却时间", _selectedSkill.cooldown);
             EditorGUILayout.Space(10);
             DrawButtonGroup(
-                ("保存配置", ()=>
+                ("保存配置", () =>
                 {
                     if (ValidateSkillData(_selectedSkill))
                     {
@@ -653,7 +655,7 @@ namespace FanXing.Editor
             ShowSuccessMessage("NPC配置已保存！");
         }
 
-        private void LoadQuestConfigs() 
+        private void LoadQuestConfigs()
         {
             _questConfigs = ImportJsonConfig<List<QuestConfigData>>("quest_config") ?? new List<QuestConfigData>();
         }
@@ -662,7 +664,7 @@ namespace FanXing.Editor
             ExportJsonConfig(_questConfigs, "quest_config");
             ShowSuccessMessage("任务配置已保存");
         }
-        private void LoadShopConfigs() 
+        private void LoadShopConfigs()
         {
             _shopConfigs = ImportJsonConfig<List<ShopConfigData>>("shop_config") ?? new List<ShopConfigData>();
         }
@@ -671,20 +673,20 @@ namespace FanXing.Editor
             ExportJsonConfig(_shopConfigs, "shop_config");
             ShowSuccessMessage("商品配置已保存");
         }
-        private void LoadCropConfigs() 
+        private void LoadCropConfigs()
         {
             _cropConfigs = ImportJsonConfig<List<CropConfigData>>("crop_config") ?? new List<CropConfigData>();
         }
-        private void SaveCropConfigs() 
+        private void SaveCropConfigs()
         {
             ExportJsonConfig(_cropConfigs, "crop_config");
             ShowSuccessMessage("作物配置已保存");
         }
-        private void LoadSkillConfigs() 
+        private void LoadSkillConfigs()
         {
             _skillConfigs = ImportJsonConfig<List<SkillConfigData>>("skill_config") ?? new List<SkillConfigData>();
         }
-        private void SaveSkillConfigs() 
+        private void SaveSkillConfigs()
         {
             ExportJsonConfig(_skillConfigs, "skill_config");
             ShowSuccessMessage("技能配置已保存");
