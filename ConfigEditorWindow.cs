@@ -157,7 +157,14 @@ namespace FanXing.Editor
 
             EditorGUILayout.Space(10);
             DrawButtonGroup(
-                ("保存配置", SaveNPCConfigs),
+                ("保存配置", ()=>
+                {
+                    if (ValidateNPCData(_selectedNPC))
+                    {
+                        SaveNPCConfigs();
+                    }
+                }
+            ),
                 ("导出JSON", () => ExportJsonConfig(_npcConfigs, "npc_config"))
             );
         }
@@ -264,7 +271,14 @@ namespace FanXing.Editor
 
             EditorGUILayout.Space(10);
             DrawButtonGroup(
-             ("保存配置", SaveQuestConfigs),
+             ("保存配置", ()=>
+             {
+                 if (ValidateQuestData(_selectedQuest))
+                 {
+                     SaveQuestConfigs();
+                 }
+             }
+            ),
              ("导出JSON", () => ExportJsonConfig(_questConfigs, "quest_config"))
          );
         }
@@ -364,7 +378,14 @@ namespace FanXing.Editor
 
             EditorGUILayout.Space(10);
             DrawButtonGroup(
-                ("导出配置", SaveShopConfigs),
+                ("导出配置", ()=>
+                {
+                    if (ValidateShopData(_selectedShop))
+                    { 
+                        SaveShopConfigs();
+                    }
+                 }
+            ),
                 ("导出JSON", () => ExportJsonConfig(_shopConfigs, "shop_config"))
                 );
         }
@@ -461,7 +482,13 @@ namespace FanXing.Editor
 
             EditorGUILayout.Space(10);
             DrawButtonGroup(
-                ("保存配置", SaveCropConfigs),
+                ("保存配置", ()=>
+                {
+                    if (ValidateCropData(_selectedCrop))
+                    {
+                        SaveCropConfigs();
+                    }
+                }),
                 ("导出JSON", () => ExportJsonConfig(_cropConfigs,"crop_config"))
                 );
         }
@@ -559,6 +586,18 @@ namespace FanXing.Editor
             _selectedSkill.skillType = (SkillType)EditorGUILayout.EnumPopup("技能类型", _selectedSkill.skillType);
             _selectedSkill.manaCost = EditorGUILayout.IntField("技能消耗", _selectedSkill.manaCost);
             _selectedSkill.cooldown = EditorGUILayout.FloatField("冷却时间", _selectedSkill.cooldown);
+            EditorGUILayout.Space(10);
+            DrawButtonGroup(
+                ("保存配置", ()=>
+                {
+                    if (ValidateSkillData(_selectedSkill))
+                    {
+                        SaveSkillConfigs();
+                    }
+                }
+            ),
+                ("导出JSON", () => ExportJsonConfig(_skillConfigs, "skill_config"))
+            );
         }
         private int GetNextSkillId()
         {
