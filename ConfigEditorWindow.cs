@@ -11,7 +11,6 @@ using System.Linq;
 /// </summary>
 namespace FanXing.Editor
 {
-    
     public class ConfigEditorWindow : FXEditorBase
     {
         #region 菜单项
