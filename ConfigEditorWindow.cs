@@ -32,22 +32,22 @@ namespace FanXing.Editor
         private NPCConfigData _selectedNPC;
         private int _selectedNPCIndex = -1;
 
-        // 任务配置 - 预留字段，待后续实现
+        // 任务配置
         private List<QuestConfigData> _questConfigs = new List<QuestConfigData>();
         private QuestConfigData _selectedQuest;
         private int _selectedQuestIndex = -1;
 
-        // 商店配置 - 预留字段，待后续实现
+        // 商店配置
         private List<ShopConfigData> _shopConfigs = new List<ShopConfigData>();
         private ShopConfigData _selectedShop;
         private int _selectedShopIndex = -1;
 
-        // 作物配置 - 预留字段，待后续实现
+        // 作物配置
         private List<CropConfigData> _cropConfigs = new List<CropConfigData>();
         private CropConfigData _selectedCrop;
         private int _selectedCropIndex = -1;
 
-        // 技能配置 - 预留字段，待后续实现
+        // 技能配置
         private List<SkillConfigData> _skillConfigs = new List<SkillConfigData>();
         private SkillConfigData _selectedSkill;
         private int _selectedSkillIndex = -1;
@@ -216,9 +216,6 @@ namespace FanXing.Editor
         #region 任务配置
         private void DrawQuestConfigTab()
         {
-            // EditorGUILayout.LabelField("任务配置功能开发中...", EditorStyles.centeredGreyMiniLabel);
-
-            // TODO: 实现任务配置界面
             EditorGUILayout.BeginHorizontal();
             // 左侧列表
             EditorGUILayout.BeginVertical(GUILayout.Width(250));
@@ -231,7 +228,6 @@ namespace FanXing.Editor
             _scrollPosition = EditorGUILayout.BeginScrollView(_scrollPosition, GUILayout.Height(400));
             for (int i = 0; i < _questConfigs.Count; i++)
             {
-                // 检查当前索引是否为全局选中的索引 全局索引是最后一个任务对应的索引
                 bool isSelected = i == _selectedQuestIndex;
                 GUI.backgroundColor = isSelected ? Color.cyan : Color.white;
                 // 按钮生成和交互
@@ -261,11 +257,10 @@ namespace FanXing.Editor
         private void DrawQuestDetails()
         {
             DrawHeader("任务详细配置");
-            // 整数文本 显示questId的值 不能被修改
             _selectedQuest.questId = EditorGUILayout.IntField("任务 ID", _selectedQuest.questId);
             _selectedQuest.questName = EditorGUILayout.TextField("任务名称", _selectedQuest.questName);
             _selectedQuest.questType = (QuestType)EditorGUILayout.EnumPopup("任务类型", _selectedQuest.questType);
-            _selectedQuest.description = EditorGUILayout.TextField(_selectedQuest.description, GUILayout.Height(80));
+            _selectedQuest.description = EditorGUILayout.TextArea(_selectedQuest.description, GUILayout.Height(80));
             _selectedQuest.rewardGold = EditorGUILayout.IntField("任务奖励", _selectedQuest.rewardGold);
             _selectedQuest.rewardExp = EditorGUILayout.IntField("任务经验", _selectedQuest.rewardExp);
 
@@ -306,7 +301,7 @@ namespace FanXing.Editor
         {
             if (_selectedQuestIndex >= 0 && _selectedQuestIndex < _questConfigs.Count)
             {
-                if (ShowConfirmDialog("删除确认", $"确认要删除任务'{_selectedQuest.questName}吗？'"))
+                if (ShowConfirmDialog("删除确认", $"确认要删除任务'{_selectedQuest.questName}'吗？"))
                 {
                     int removeId = _questConfigs[_selectedQuestIndex].questId;
                     _questConfigs.RemoveAt(_selectedQuestIndex);
@@ -327,8 +322,6 @@ namespace FanXing.Editor
         #region 商店配置
         private void DrawShopConfigTab()
         {
-            // EditorGUILayout.LabelField("商店配置功能开发中...", EditorStyles.centeredGreyMiniLabel);
-            // TODO: 实现商店配置界面
             EditorGUILayout.BeginHorizontal();
 
             // 左侧列表
@@ -378,7 +371,7 @@ namespace FanXing.Editor
 
             EditorGUILayout.Space(10);
             DrawButtonGroup(
-                ("导出配置", () =>
+                ("保存配置", () =>
                 {
                     if (ValidateShopData(_selectedShop))
                     {
@@ -393,7 +386,7 @@ namespace FanXing.Editor
         {
             if (_selectedShopIndex >= 0 && _selectedShopIndex < _shopConfigs.Count)
             {
-                if (ShowConfirmDialog("删除确认", $"确认要删除商品'{_selectedShop.shopName}吗？'"))
+                if (ShowConfirmDialog("删除确认", $"确认要删除商品'{_selectedShop.shopName}'吗？"))
                 {
                     int removeId = _shopConfigs[_selectedShopIndex].shopId;
                     _shopConfigs.RemoveAt(_selectedShopIndex);
@@ -409,7 +402,7 @@ namespace FanXing.Editor
                 }
             }
         }
-        private int GetNewShopId()
+        private int GetNextShopId()
         {
             if (_shopConfigs.Count == 0) return 1;
             return _shopConfigs.Max(s => s.shopId) + 1;
@@ -418,7 +411,7 @@ namespace FanXing.Editor
         {
             var newShop = new ShopConfigData
             {
-                shopId = GetNewShopId(),
+                shopId = GetNextShopId(),
                 shopName = "新商品",
                 shopType = ShopType.General,
                 rentCost = 10,
@@ -433,8 +426,6 @@ namespace FanXing.Editor
         #region 作物配置
         private void DrawCropConfigTab()
         {
-            // EditorGUILayout.LabelField("作物配置功能开发中...", EditorStyles.centeredGreyMiniLabel);
-            // TODO: 实现作物配置界面
             EditorGUILayout.BeginHorizontal();
             // 左侧列表
             EditorGUILayout.BeginVertical(GUILayout.Width(250));
@@ -460,7 +451,7 @@ namespace FanXing.Editor
             EditorGUILayout.EndVertical();
             // 右侧详情
             EditorGUILayout.BeginVertical();
-            if (_cropConfigs != null)
+            if (_selectedCrop != null)
             {
                 DrawCropDetails();
             }
@@ -537,8 +528,6 @@ namespace FanXing.Editor
         #region 技能配置
         private void DrawSkillConfigTab()
         {
-            // EditorGUILayout.LabelField("技能配置功能开发中...", EditorStyles.centeredGreyMiniLabel);
-            // TODO: 实现技能配置界面
             EditorGUILayout.BeginHorizontal();
             // 左侧列表
             EditorGUILayout.BeginVertical(GUILayout.Width(250));
@@ -551,14 +540,11 @@ namespace FanXing.Editor
             _scrollPosition = EditorGUILayout.BeginScrollView(_scrollPosition, GUILayout.Height(400));
             for (int i = 0; i < _skillConfigs.Count; i++)
             {
-                // 通过循环来判断 _selectedSkillIndex的大小
                 bool isSelected = i == _selectedSkillIndex;
-                // 找到了选中的技能后 将其背景确认为青色
                 GUI.backgroundColor = isSelected ? Color.cyan : Color.white;
-                // 将技能按钮全部创建出来 并且选中按钮后会改变对应的值
                 if (GUILayout.Button($"{_skillConfigs[i].skillName}(ID:{_skillConfigs[i].skillId})", GUILayout.Height(25)))
                 {
-                    _selectedSkillIndex = i; // 因为OnGUI是每帧都会调用 所以在我选择了这个按钮改变了index后 上面的代码会让对应按钮变色
+                    _selectedSkillIndex = i; 
                     _selectedSkill = _skillConfigs[i];
                 }
                 GUI.backgroundColor = Color.white;
@@ -644,7 +630,6 @@ namespace FanXing.Editor
         #region 数据加载保存
         private void LoadNPCConfigs()
         {
-            // ?? 空合并运算符 如果左侧返回null 则使用右侧的逻辑
             _npcConfigs = ImportJsonConfig<List<NPCConfigData>>("npc_config") ?? new List<NPCConfigData>();
         }
 
@@ -661,7 +646,7 @@ namespace FanXing.Editor
         private void SaveQuestConfigs()
         {
             ExportJsonConfig(_questConfigs, "quest_config");
-            ShowSuccessMessage("任务配置已保存");
+            ShowSuccessMessage("任务配置已保存!");
         }
         private void LoadShopConfigs()
         {
@@ -670,7 +655,7 @@ namespace FanXing.Editor
         private void SaveShopConfigs()
         {
             ExportJsonConfig(_shopConfigs, "shop_config");
-            ShowSuccessMessage("商品配置已保存");
+            ShowSuccessMessage("商品配置已保存!");
         }
         private void LoadCropConfigs()
         {
@@ -679,7 +664,7 @@ namespace FanXing.Editor
         private void SaveCropConfigs()
         {
             ExportJsonConfig(_cropConfigs, "crop_config");
-            ShowSuccessMessage("作物配置已保存");
+            ShowSuccessMessage("作物配置已保存!");
         }
         private void LoadSkillConfigs()
         {
@@ -688,7 +673,7 @@ namespace FanXing.Editor
         private void SaveSkillConfigs()
         {
             ExportJsonConfig(_skillConfigs, "skill_config");
-            ShowSuccessMessage("技能配置已保存");
+            ShowSuccessMessage("技能配置已保存!");
         }
         #endregion
 
@@ -701,7 +686,7 @@ namespace FanXing.Editor
                 return false;
             }
 
-            if (string.IsNullOrEmpty(data.npcName))
+            if (string.IsNullOrWhiteSpace(data.npcName))
             {
                 ShowErrorMessage("NPC名称不能为空");
                 return false;
@@ -716,7 +701,7 @@ namespace FanXing.Editor
                 ShowErrorMessage("任务 ID必须大于0");
                 return false;
             }
-            if (string.IsNullOrEmpty(data.questName))
+            if (string.IsNullOrWhiteSpace(data.questName))
             {
                 ShowErrorMessage("任务名称不能为空");
                 return false;
@@ -730,7 +715,7 @@ namespace FanXing.Editor
                 ShowErrorMessage("商品 ID必须大于0");
                 return false;
             }
-            if (string.IsNullOrEmpty(data.shopName))
+            if (string.IsNullOrWhiteSpace(data.shopName))
             {
                 ShowErrorMessage("商品名称不能为空");
                 return false;
@@ -744,7 +729,7 @@ namespace FanXing.Editor
                 ShowErrorMessage("作物 ID必须大于0");
                 return false;
             }
-            if (string.IsNullOrEmpty(data.cropName))
+            if (string.IsNullOrWhiteSpace(data.cropName))
             {
                 ShowErrorMessage("作物名称不能为空");
                 return false;
@@ -758,7 +743,7 @@ namespace FanXing.Editor
                 ShowErrorMessage("技能 ID必须大于0");
                 return false;
             }
-            if (string.IsNullOrEmpty(data.skillName))
+            if (string.IsNullOrWhiteSpace(data.skillName))
             {
                 ShowErrorMessage("技能名称不能为空");
                 return false;
@@ -769,9 +754,6 @@ namespace FanXing.Editor
     }
 
     #region 配置数据结构
-    /// <summary>
-    /// NPC配置数据
-    /// </summary>
     [System.Serializable]
     public class NPCConfigData
     {
@@ -782,9 +764,7 @@ namespace FanXing.Editor
         public Vector3 position;
         public bool isInteractable;
     }
-    /// <summary>
-    /// 任务配置数据
-    /// </summary>
+
     [System.Serializable]
     public class QuestConfigData
     {
@@ -795,9 +775,7 @@ namespace FanXing.Editor
         public int rewardGold;
         public int rewardExp;
     }
-    /// <summary>
-    /// 商品配置数据
-    /// </summary>
+
     [System.Serializable]
     public class ShopConfigData
     {
